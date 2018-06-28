@@ -1,3 +1,4 @@
+# coding: utf-8
 """
 Django settings for penjing_query project.
 
@@ -74,12 +75,20 @@ WSGI_APPLICATION = 'penjing_query.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': None, # 把默认的数据库连接至为None
     }
 }
+from mongoengine import connect
+connect(host='mongodb://dongz:12345678@192.168.183.129:27017/MagazinesDB_mongoengine')
 
 
 # Password validation
