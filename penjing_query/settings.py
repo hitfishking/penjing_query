@@ -84,11 +84,14 @@ WSGI_APPLICATION = 'penjing_query.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': None, # 把默认的数据库连接至为None
+        'ENGINE': None, # 完全关闭django自带的数据库engine；使用外部的mongodb数据库；
     }
 }
+
 from mongoengine import connect
-connect(host='mongodb://dongz:12345678@192.168.183.129:27017/MagazinesDB_mongoengine')
+# db_client = connect(host='mongodb://dongz:12345678@192.168.183.129:27017/MagazinesDB_mongoengine')   #No
+db_client = connect('MagazinesDB_mongoengine', host='mongodb://dongz:12345678@192.168.183.129:27017')  #Yes
+
 
 
 # Password validation

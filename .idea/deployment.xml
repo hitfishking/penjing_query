@@ -5,7 +5,7 @@
       <paths name="dongz@192.168.183.129:22">
         <serverdata>
           <mappings>
-            <mapping deploy="/home/dongz/progdata/penjing_query" local="$PROJECT_DIR$" />
+            <mapping deploy="/progdata/penjing_query" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
