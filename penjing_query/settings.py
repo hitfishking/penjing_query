@@ -90,7 +90,7 @@ DATABASES = {
 
 from mongoengine import connect
 # db_client = connect(host='mongodb://dongz:12345678@192.168.183.129:27017/MagazinesDB_mongoengine')   #No
-db_client = connect('MagazinesDB_mongoengine', host='mongodb://dongz:12345678@192.168.183.129:27017')  #Yes
+db_client = connect('MagazinesDB_mongoengine', host='mongodb://dongz:12345678@192.168.183.130:27017')  #Yes
 
 
 
@@ -131,3 +131,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

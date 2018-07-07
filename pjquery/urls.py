@@ -4,10 +4,16 @@
 # 尽量局部化，模块独立化，再全局引用，是django框架模块化思想的重要运用；
 # ------------------------------------------
 from django.conf.urls import url
-from . import views
-from . import views1
+from . import views, views2
+from pjquery.views2 import Magazine_Controller
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^query/', views.query_dir, name='query_dir'),
+    url(r'^old/', views.index_old, name='index_old'),
+
+    url(r'^query1/', Magazine_Controller.as_view(), name='query_dir1'),
+    url(r'^query2/', views2.query_dir2, name='query_dir2'),
+
+    url(r'^search/', views.search_keywords, name='search_keywords'),
+
 ]
