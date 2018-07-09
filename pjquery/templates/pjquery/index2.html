@@ -3,8 +3,9 @@
 
 <html lang="en">
 
-<!--本例参考bootstrap官网案例：https://getbootstrap.com/docs/4.1/examples/dashboard/，去掉chart；-->
+
 <!--本例目标是为Penjing_query项目提供web template-->
+<!--本例使用bootstrap-table这个table jquery插件来显示table；(不同于index.html的bootstrap原生table方案(没有自动分页等功能))-->
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-table.css' %}">
 
     <!--Your custom styles (optional)-->
     <!--<link rel="stylesheet" href="{% static 'css/style.css' %}" >-->
@@ -26,9 +28,10 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">《中国花卉盆景》文章搜索</a>
 
-      <form class="form-inline w-100" action="/search/" method="post"> {% csrf_token %}
-        <input class="form-control form-control-dark w-75" type="search" placeholder="Search" aria-label="Search" name="inputwords">
-        <button class="btn btn-outline-success my-0 w-25" type="submit">Search</button>
+      <form class="form-inline w-100" action="/search2/" method="get">
+        {% csrf_token %}
+        <input class="form-control form-control-dark w-75" type="search" placeholder="Search" aria-label="Search" name="inputwords" id="searchText">
+        <button class="btn btn-outline-success my-0 w-25" type="submit" id="searchBtn">Search</button>
       </form>
 
 
@@ -120,35 +123,37 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
           <h5 class="my-4"><strong>搜索结果</strong></h5>
-          <div class="table-responsive">
+            <div class="table-responsive">
+               <table class="table table-sm mx-0 table-hover" id="cusTable">
 
-            <table class="table table-sm row mx-0">
-              <thead class="w-100">
-                <tr class="row mx-0">
-                  <th class="col-1">序号</th>
-                  <th class="col-1">年份</th>
-                  <th class="col-1">月份</th>
-                  <th class="col-7">文章标题</th>
-                  <th class="col-2">页码</th>
-                </tr>
-              </thead>
+                 <thead>
+                   <tr>
+                     <th style="text-align: center; " data-field="id">
+                       <div class="th-inner ">序号</div>
+                       <div class="fht-cell"></div>
+                     </th>
+                     <th style="text-align: center; " data-field="year">
+                       <div class="th-inner ">年份</div>
+                       <div class="fht-cell"></div>
+                     </th>
+                     <th style="text-align: center; " data-field="month">
+                       <div class="th-inner ">月份</div>
+                       <div class="fht-cell"></div>
+                     </th>
+                     <th style="text-align: center; " data-field="title">
+                       <div class="th-inner ">文章标题</div>
+                       <div class="fht-cell"></div>
+                     </th>
+                     <th style="text-align: center; " data-field="page">
+                       <div class="th-inner ">页码</div>
+                       <div class="fht-cell"></div>
+                     </th>
+                   </tr>
+                 </thead>
 
-              <tbody class="w-100">
+               </table>
 
-                  {% for info in results %}
-                        <tr class="row mx-0">
-                            <td class="col-1">{{forloop.counter}}</td>
-                            <td class="col-1">{{info.0}}</td>
-                            <td class="col-1">{{info.1}}</td>
-                            <td class="col-7">{{info.2}}</td>
-                            <td class="col-2">{{info.3}}</td>
-                        </tr>
-                  {% endfor %}
-
-              </tbody>
-            </table>
-
-          </div>
+            </div>
         </main>
 
 
@@ -157,9 +162,112 @@
     <!-- /Start your project here-->
 
 
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-table.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-table-zh-CN.js' %} "></script>
+
+
+    <script type="text/javascript">
+          function initTable() {
+            $('#cusTable').bootstrapTable('destroy');
+            $("#cusTable").bootstrapTable({
+                method: "get",
+                dataType: "json",
+                // url: "{% url 'search_keywords2' %}",
+                url: "http://192.168.183.130:8000/search2/",
+                cache: true,
+                striped: false,
+                pagination: true,
+                pageSize: 10,
+                pageNumber: 1,
+                pageList: [10, 20, 30, 40, 50],
+                search: true,
+                showColumns: false,
+                showRefresh: true,
+                minimumCountColumns: 2,
+                clickToSelect: true,
+                sidePagination: "server",
+
+                queryParamsType: "undefined",
+                queryParams: function (e) {
+                    var param = {
+                        pageNumber: e.pageNumber,
+                        PageSize: e.limit,
+                        PageIndex: (e.offset / e.limit) + 1,
+                        orderNum: 18,  //验证用；
+                        inputwords : $("#searchText").val()
+                    };
+                    return param;
+                },
+                responseHandler: function (e) {
+                    // if (e.data && e.data.Rows && e.data.Rows.length > 0) {
+                    //     return {rows: e.data.Rows, total: e.data.Total};
+                    // }
+                    // else {
+                    //     return {"rows": [], "total": 0};
+                    // }
+                    return e;
+                },
+                onLoadSuccess: function () {
+                    // alert("加载数据成功")
+                },
+                onLoadError: function () {
+                    // alert("加载数据失败")
+                },
+
+                columns: [{
+                    field: 'id',
+                    title: '序号',
+                    checkbox: false,
+                    visible: true,
+                    align: 'center'
+                },
+                    {
+                        field: 'year',
+                        title: '年份',
+                        align: 'center',
+                        sortable: false,
+                        clickToSelect: false
+                    },
+                    {
+                        field: 'month',
+                        title: '月份',
+                        align: 'center',
+                        sortable: false,
+                        clickToSelect: false
+                    },
+                    {
+                        field: 'title',
+                        title: '文章标题',
+                        align: 'center',
+                        sortable: false,
+                        clickToSelect: false
+                    },
+                    {
+                        field: 'page',
+                        title: '页码',
+                        align: 'center',
+                        sortable: false,
+                        clickToSelect: false
+                    }]
+
+            }) //bootstrapTable()
+          } //initTable()
+
+          // $(document).ready(function() {
+          //     initTable();
+          //     $("#searchBtn").bind("click", initTable);
+          // });
+
+          // $("#searchBtn").bind("click", initTable);
+          $("#searchBtn").click(function(e){
+              initTable();
+              e.preventDefault();
+          })
+
+    </script>
 
 
 </body>

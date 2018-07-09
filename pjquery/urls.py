@@ -15,5 +15,6 @@ urlpatterns = [
     url(r'^query2/', views2.query_dir2, name='query_dir2'),
 
     url(r'^search/', views.search_keywords, name='search_keywords'),
+    url(r'^search2/', views.search_keywords2, name='search_keywords2'),
 
 ]

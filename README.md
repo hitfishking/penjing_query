@@ -16,5 +16,9 @@ for i in Magazine.objects(year='2011'):
    故，应该充分利用面向对象思想，对外只区分get()，post()，在其内部做dispatch()；
 5）
 -------------------
-index_old.html: 最初没有使用任何web框架的裸view；
-index.html：使用bootstrap样式框架的table；
+[index_**.html的几个版本]
+1）index_old.html: 最初没有使用任何web框架的裸view；
+2）index.html：使用bootstrap样式框架的table；
+3）index2.html：使用bootstrap-table plugin;
+-------------------
+
