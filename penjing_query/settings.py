@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 
 # Application definition
+# django中，一个项目(project)中可以安装/开发多个应用(app)；
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -75,22 +76,22 @@ WSGI_APPLICATION = 'penjing_query.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': None, # 完全关闭django自带的数据库engine；使用外部的mongodb数据库；
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': None, # 完全关闭django自带的数据库engine；使用外部的mongodb数据库；
+#     }
+# }
+
 from mongoengine import connect
-# db_client = connect(host='mongodb://dongz:12345678@192.168.183.129:27017/MagazinesDB_mongoengine')   #No
-db_client = connect('MagazinesDB_mongoengine', host='mongodb://dongz:12345678@192.168.183.130:27017')  #Yes
+# db_client = connect(host='mongodb://root:example@localhost:27017/MagazinesDB?authSource=MagazinesDB')   #No
+connect('MagazinesDB', host='mongodb://root:example@localhost:27017/MagazinesDB?authSource=MagazinesDB')  #Yes
 
 
 

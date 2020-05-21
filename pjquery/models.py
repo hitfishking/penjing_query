@@ -11,7 +11,7 @@ class Dir(EmbeddedDocument):
     article_page = StringField(required=True)
 
 # Level1 document.
-class Magazine(Document):
+class penjing(Document):
     year = StringField(required=True)
     month = StringField(required=True)
     dir = ListField(EmbeddedDocumentField(Dir))

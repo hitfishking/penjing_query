@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
-
+{#本例table部分使用bootstrap-table.js jQuery插件。#}
 <html lang="en">
 
 
@@ -19,7 +19,6 @@
 
     <!--Your custom styles (optional)-->
     <!--<link rel="stylesheet" href="{% static 'css/style.css' %}" >-->
-
 </head>
 
 <body>
@@ -28,7 +27,7 @@
     <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
       <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">《中国花卉盆景》文章搜索</a>
 
-      <form class="form-inline w-100" action="/search2/" method="get">
+      <form class="form-inline w-100" method="get">
         {% csrf_token %}
         <input class="form-control form-control-dark w-75" type="search" placeholder="Search" aria-label="Search" name="inputwords" id="searchText">
         <button class="btn btn-outline-success my-0 w-25" type="submit" id="searchBtn">Search</button>
@@ -54,15 +53,15 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{% url 'query_dir1' %}">
+                <a class="nav-link" href="{% url 'index_1' %}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
-                  原Index
+                  bootstrap原版table
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{% url 'index_2' %}">
                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
-                  Products
+                  boostrap-table版
                 </a>
               </li>
               <li class="nav-item">
@@ -122,7 +121,7 @@
 
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
 
-          <h5 class="my-4"><strong>搜索结果</strong></h5>
+          <h6 class="my-4"><strong>搜索结果</strong></h6>
             <div class="table-responsive">
                <table class="table table-sm mx-0 table-hover" id="cusTable">
 
@@ -156,7 +155,6 @@
             </div>
         </main>
 
-
       </div>
     </div>
     <!-- /Start your project here-->
@@ -189,11 +187,12 @@
                 clickToSelect: true,
                 sidePagination: "server",
 
-                queryParamsType: "undefined",
+                queryParamsType: "limit",
                 queryParams: function (e) {
                     var param = {
-                        pageNumber: e.pageNumber,
-                        PageSize: e.limit,
+                        pageNumber: e.pageNumber,  //PageIndex
+                        pageSize: e.limit,
+                        offSet: e.offset,
                         PageIndex: (e.offset / e.limit) + 1,
                         inputwords : $("#searchText").val()
                     };
@@ -221,7 +220,7 @@
                     checkbox: false,
                     visible: true,
                     align: 'center'
-                },
+                   },
                     {
                         field: 'year',
                         title: '年份',

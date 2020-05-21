@@ -20,4 +20,6 @@ urlpatterns = [
     # ------------------------类controller版功能---------------
     url(r'^query1/', Magazine_Controller.as_view(), name='query_dir1'),
     url(r'^query2/', views2.query_dir, name='query_dir2'),
+    # ----------------
+    url(r'^sample/', views2.show_sample, name='show_sample')
 ]

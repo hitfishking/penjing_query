@@ -20,3 +20,7 @@ if __name__ == "__main__":
             )
         raise
     execute_from_command_line(sys.argv)
+
+    # import pydevd
+    # pydevd.settrace('192.168.0.4', port=21000, stdoutToServer=True, stderrToServer=True, suspend=False)
+
